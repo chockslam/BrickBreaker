@@ -12,10 +12,13 @@ public abstract class DrawableGameObject extends SceneObject {
 
     protected Bitmap drawable;
     protected Context context;
+    protected Vector size;
+
 
     public DrawableGameObject(Vector pos, Vector sceneDimensions, Vector size, Context context) {
         super(pos, sceneDimensions);
         this.context = context;
+        this.size = size;
     }
     @Override
 
@@ -23,7 +26,6 @@ public abstract class DrawableGameObject extends SceneObject {
         if(this.active){
             canvas.drawBitmap(drawable, pos.getX(), pos.getY(), null);
         }
-        //canvas.drawBitmap(drawable, pos.getX(), pos.getY(), null);
     }
 
     public Bitmap getDrawable() {
@@ -41,7 +43,6 @@ public abstract class DrawableGameObject extends SceneObject {
 
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
-
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 
         return resizedBitmap;

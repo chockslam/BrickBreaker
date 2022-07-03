@@ -7,17 +7,17 @@ import java.util.Random;
 
 public class Ball extends MovableGameObject implements Collidable{
 
-    Random randomizer;
-    ObjectManager om;
-    float initY;
-    boolean collided;
+    private Random randomizer;
+    private ObjectManager om;
+    private float initY;
+    private boolean collided;
 
     public Ball(Vector pos, Vector vel, Vector sceneDimensions, Vector size, ObjectManager om, Context context) {
         super(pos, vel, sceneDimensions, size, context);
         this.initY = this.pos.getY();
         this.drawable = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
         this.drawable = getResizedBitmap(this.drawable, (int)size.getY(), (int)size.getX() );
-        randomizer = new Random();
+        this.randomizer = new Random();
         this.om = om;
         this.collided = false;
     }
@@ -30,10 +30,10 @@ public class Ball extends MovableGameObject implements Collidable{
             this.pos.setY(this.pos.getY()+ this.vel.getY());
 
             if(this.pos.getX()>= sceneDimensions.getX()-this.drawable.getWidth()||this.pos.getX() <= 0){
-                vel.setX(vel.getX()*(-1));
+                this.vel.setX(vel.getX()*(-1));
             }
             if(this.pos.getY()<=0){
-                vel.setY(vel.getY()*(-1));
+                this.vel.setY(vel.getY()*(-1));
             }
 
         }
@@ -48,7 +48,7 @@ public class Ball extends MovableGameObject implements Collidable{
 
             if (obj instanceof Paddle){
                 // if ball goes underneath the paddle.
-                if(this.pos.getY()> obj.getPos().getY() + ((Paddle) obj).getDrawable().getHeight()){
+                if(this.pos.getY() > obj.getPos().getY() + ((Paddle) obj).getDrawable().getHeight()){
                         this.pos.setX(1+randomizer.nextInt((int)(sceneDimensions.getX()-this.drawable.getWidth() - this.drawable.getWidth())));
                         this.pos.setY(initY);
                         this.om.getHealthBar().Decrement();
@@ -115,7 +115,6 @@ public class Ball extends MovableGameObject implements Collidable{
 
                 if(collided){
                     ((Brick) obj).Hit();
-                    this.om.getScore().Increment();
                 }
 
             }
