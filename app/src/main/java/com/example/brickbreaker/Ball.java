@@ -46,7 +46,7 @@ public class Ball extends MovableGameObject implements Collidable{
     @Override
     public void onCollision(SceneObject obj) {
 
-        float speedFactor = (float)this.om.getLevelManager().getLevel()*this.om.getLevelManager().getLevel()/10;
+
         if(!collided){
 
             if (obj instanceof Paddle){
@@ -62,23 +62,37 @@ public class Ball extends MovableGameObject implements Collidable{
                         &&(this.pos.getX()+this.drawable.getWidth()) > obj.getPos().getX()
                         && this.pos.getX() <= obj.getPos().getX() + ((DrawableGameObject) obj).getDrawable().getWidth()
                         && this.pos.getY() + this.drawable.getHeight() <= obj.getPos().getY() + ((DrawableGameObject) obj).getDrawable().getHeight()
-                        && this.pos.getY() + this.drawable.getHeight()>=obj.getPos().getY()){
+                        && this.pos.getY() + this.drawable.getHeight()>=obj.getPos().getY() -this.vel.getY() ){
                         ((Paddle) obj).playBounce();
                         this.vel.setY(-this.vel.getY());
                 }
             }
             if (obj instanceof Brick){
+                // speedFactor is added to velocity when it touches the brick.
+                // speedFactor is dependent on level.
+                float speedFactor = 0.1f;
+                int level = this.om.getLevelManager().getLevel();
+
+                if(level == 1){
+                    speedFactor = 0.35f;
+                }
+                if(level == 2){
+                    speedFactor = 0.45f;
+                }
+                if(level == 3){
+                    speedFactor = 0.6f;
+                }
+
                 // Top of the brick
                 if (
                         !collided
                         &&this.pos.getX() + this.drawable.getWidth() > obj.getPos().getX()
                         && this.pos.getX() <= obj.getPos().getX() + ((DrawableGameObject) obj).getDrawable().getWidth()
                         && this.pos.getY() + this.drawable.getHeight() <= obj.getPos().getY() + ((DrawableGameObject) obj).getDrawable().getHeight()
-                        && this.pos.getY() + this.drawable.getHeight() >= obj.getPos().getY()
+                        && this.pos.getY() + this.drawable.getHeight() >= obj.getPos().getY() -this.vel.getY()
                     )
                 {
                     collided = true;
-                    speedFactor = -speedFactor;
                     this.vel.setY(-this.vel.getY() - speedFactor);
                 }
                 // Bottom of the brick
@@ -86,7 +100,7 @@ public class Ball extends MovableGameObject implements Collidable{
                         !collided
                         &&this.pos.getX() + this.drawable.getWidth() > obj.getPos().getX()
                         && this.pos.getX() <= obj.getPos().getX() + ((DrawableGameObject) obj).getDrawable().getWidth()
-                        && this.pos.getY() <= obj.getPos().getY() + ((DrawableGameObject) obj).getDrawable().getHeight()
+                        && this.pos.getY() <= obj.getPos().getY() + ((DrawableGameObject) obj).getDrawable().getHeight() - this.vel.getY()
                         && this.pos.getY() >= obj.getPos().getY()
                     )
                     {
@@ -104,7 +118,7 @@ public class Ball extends MovableGameObject implements Collidable{
                     )
                     {
                         collided = true;
-                        speedFactor = -speedFactor;
+                        //speedFactor = -speedFactor;
                         this.vel.setX(-this.vel.getX() - speedFactor);
                     }
                 // Right of the brick
