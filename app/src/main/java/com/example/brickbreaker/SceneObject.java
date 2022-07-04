@@ -2,7 +2,9 @@ package com.example.brickbreaker;
 
 import android.graphics.Canvas;
 
+// Abstract class represents any object in the scene.
 public abstract class SceneObject {
+
     protected Vector sceneDimensions;
     protected Vector pos;
     protected boolean active;
@@ -13,7 +15,9 @@ public abstract class SceneObject {
         this.active = false;
     }
 
+    // Update position of the object.
     abstract public void Update();
+
 
     public void Activate() {
         this.active = true;
@@ -23,6 +27,7 @@ public abstract class SceneObject {
         this.active = false;
     }
 
+    // Render the object.
     abstract public void Draw(Canvas canvas);
 
     public Vector getPos() {

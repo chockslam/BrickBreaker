@@ -8,6 +8,7 @@ import android.content.Context;
 
 import androidx.core.graphics.drawable.IconCompat;
 
+// Abstract class represents textured object.
 public abstract class DrawableGameObject extends SceneObject {
 
     protected Bitmap drawable;
@@ -21,7 +22,7 @@ public abstract class DrawableGameObject extends SceneObject {
         this.size = size;
     }
     @Override
-
+//    Draw Picutre
     public void Draw(Canvas canvas){
         if(this.active){
             canvas.drawBitmap(drawable, pos.getX(), pos.getY(), null);
@@ -32,7 +33,8 @@ public abstract class DrawableGameObject extends SceneObject {
         return drawable;
     }
 
-    //    https://stackoverflow.com/questions/34491569/how-to-change-the-size-of-bitmap
+//    Resize bitmap.
+//    Taken from:  https://stackoverflow.com/questions/34491569/how-to-change-the-size-of-bitmap
     public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
 
         int width = bm.getWidth();

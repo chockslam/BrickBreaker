@@ -19,13 +19,16 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.Random;
 
+// Application / GameView class.
+// Handles engine's architecture.
 public class GameView extends View {
 
-
+    // Android specific.
     Context context;
     Handler handler;
     final long UPD_MIL = 30;
     Runnable runnable;
+    // Object Manager. Game Engine Utility.
     ObjectManager om;
 
 
@@ -33,6 +36,7 @@ public class GameView extends View {
 
     public GameView(Context context) {
         super(context);
+        // Android Specific.
         this.context = context;
         handler = new Handler();
         runnable = new Runnable() {
@@ -45,18 +49,21 @@ public class GameView extends View {
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
+
+        // initialize ObjectManager and add LevelManager to it.
         this.om = new ObjectManager();
         this.om.AddLevelManager(new LevelManager(this.om, context, size));
 
 
 
     }
-
+//    Called every frame.
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.BLACK);
 
+        // Handle objects in Object Manager class.
         this.om.checkCollisions();
         this.om.UpdateAll();
         this.om.RenderAll(canvas);
@@ -69,6 +76,7 @@ public class GameView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
+        // Handle TouchEvents using ObjectManager.
         if(this.om.processTouchEvent(event)){
             return true;
         }

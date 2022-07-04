@@ -2,24 +2,33 @@ package com.example.brickbreaker;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 
 import java.util.Random;
 
+// Class represents a single brick in the game.
 public class Brick extends DrawableGameObject implements Collidable{
+
     private Random randomizer;
     private int life;
     private ObjectManager om;
-    private int type;
+    private int type;                       // Type of the brick - random.
+    MediaPlayer cracked, broken;            // SFX's.
     public Brick(Vector pos, Vector sceneDimensions, Vector size, Context context, ObjectManager om) {
         super(pos, sceneDimensions, size, context);
         this.om = om;
+        // Initial lives = 2;
         this.life = 2;
         this.randomizer = new Random();
+        // Random brick texture handling
         this.type = randomizer.nextInt(9);
         this.drawable = BitmapFactory.decodeResource(context.getResources(), RandomBrickType(this.type, this.life));
         this.drawable = getResizedBitmap(this.drawable, (int)size.getY(), (int)size.getX() );
+        this.cracked = MediaPlayer.create(context, R.raw.cracked);
+        this.broken = MediaPlayer.create(context, R.raw.broken);
     }
 
+    // Handle brick texture according to its type and life.
     private int RandomBrickType(int type, int life){
         if(life == 2){
 
@@ -76,6 +85,7 @@ public class Brick extends DrawableGameObject implements Collidable{
     }
 
 
+//    Tracks whether the brick is alive.
     @Override
     public void Update() {
         if(this.active){
@@ -88,22 +98,29 @@ public class Brick extends DrawableGameObject implements Collidable{
 
     }
 
-
+//  Empty. Everything is handled in Ball class.
     @Override
     public void onCollision(SceneObject obj) {
         
     }
 
+//    Called when collided with the ball.
     public void Hit(){
         life--;
 
         if(life == 1){
             this.om.getScore().Increment();
+            if(cracked!=null){
+                cracked.start();
+            }
         }
 
         if(life==0){
             this.om.getScore().Increment();
             this.om.getScore().Increment();
+            if(cracked!=null){
+                broken.start();
+            }
         }
 
         if(life>0){
