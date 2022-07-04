@@ -96,10 +96,10 @@ public class Ball extends MovableGameObject implements Collidable{
                 // Left of the brick
                 if  (
                         !collided
-                        &&this.pos.getY() + this.drawable.getHeight() > obj.getPos().getY()
+                        &&this.pos.getY()   > obj.getPos().getY()
                         && this.pos.getY() <= obj.getPos().getY() + ((DrawableGameObject) obj).getDrawable().getHeight()
-                        &&(this.pos.getX() + this.drawable.getWidth()) >= obj.getPos().getX()
                         && this.pos.getX() + this.drawable.getWidth() <= obj.getPos().getX()  + ((DrawableGameObject) obj).getDrawable().getWidth()
+                        &&(this.pos.getX() + this.drawable.getWidth()) >= obj.getPos().getX() - this.vel.getX()
 
                     )
                     {
@@ -110,9 +110,9 @@ public class Ball extends MovableGameObject implements Collidable{
                 // Right of the brick
                 if  (
                         !collided
-                        &&this.pos.getY() + this.drawable.getHeight() > obj.getPos().getY()
+                        &&this.pos.getY()  > obj.getPos().getY()
                         && this.pos.getY() <= obj.getPos().getY() + ((DrawableGameObject) obj).getDrawable().getHeight()
-                        && this.pos.getX() <= obj.getPos().getX() + ((DrawableGameObject) obj).getDrawable().getWidth() + this.drawable.getWidth()
+                        && this.pos.getX() <= obj.getPos().getX() + ((DrawableGameObject) obj).getDrawable().getWidth() - this.vel.getX()
                         && this.pos.getX() >= obj.getPos().getX()
                     )
                     {
